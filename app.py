@@ -15,7 +15,16 @@ def create_app():
     app = Flask(__name__)
 
     # ── Extension ────────────────────────────────────────────
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    CORS(
+        app,
+        origins=[
+            "https://amdx-umkmsite.vercel.app",
+            "http://localhost:3000",   # sesuaikan/hapus kalau tidak dipakai untuk dev
+            "http://127.0.0.1:5500",   # contoh kalau pakai Live Server, sesuaikan/hapus
+        ],
+        supports_credentials=True,
+        allow_headers=["Content-Type", "Authorization"],
+    )
 
     # ── Daftarkan Blueprint ───────────────────────────────────
     from routes.auth_routes import auth_bp
