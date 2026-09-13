@@ -5,6 +5,7 @@ Entry point utama aplikasi
 
 from flask import Flask
 from flask_cors import CORS
+from werkzeug.middleware.proxy_fix import ProxyFix
 from dotenv import load_dotenv
 import os
 
@@ -13,6 +14,10 @@ load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+
+    # ── Percaya header dari proxy (Railway) supaya Flask tahu
+    #    request aslinya https, bukan http ──────────────────────
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
     # ── Extension ────────────────────────────────────────────
     CORS(
